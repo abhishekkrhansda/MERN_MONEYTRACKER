@@ -4,14 +4,18 @@ import avatar from '../../img/avatar.png'
 import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 
+import { useGlobalContext } from '../../context/globalContext'
+
 function Navigation({active, setActive}) {
+
+    const {user,logout} = useGlobalContext();
     
     return (
         <NavStyled>
             <div className="user-con">
                 <img src={avatar} alt="" />
                 <div className="text">
-                    <h2>Mike</h2>
+                    <h2>{user}</h2>
                     <p>Your Money</p>
                 </div>
             </div>
@@ -28,7 +32,7 @@ function Navigation({active, setActive}) {
                 })}
             </ul>
             <div className="bottom-nav">
-                <li>
+            <li>
                     {signout}Login
                 </li>
                 <li>
