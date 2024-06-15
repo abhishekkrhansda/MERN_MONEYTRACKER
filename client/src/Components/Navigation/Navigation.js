@@ -8,14 +8,14 @@ import { useGlobalContext } from '../../context/globalContext'
 
 function Navigation({active, setActive}) {
 
-    const {user,logout} = useGlobalContext();
+    const {users,logout} = useGlobalContext();
     
     return (
         <NavStyled>
             <div className="user-con">
                 <img src={avatar} alt="" />
                 <div className="text">
-                    <h2>{user}</h2>
+                    <h2>{users}</h2>
                     <p>Your Money</p>
                 </div>
             </div>

@@ -321,15 +321,19 @@ export const GlobalProvider = ({ children }) => {
     const [incomes, setIncomes] = useState([]);
     const [expenses, setExpenses] = useState([]);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState('');
+    const [users, setUsers] = useState('');
+    const [userId,setUserId] = useState('');
+
 
     const login = async (formData) => {
         try {
             const response = await axios.post(`${BASE_URL}login`, formData);
-            const { token,username } = response.data;
+            const { userId ,users} = response.data;
+            // localStorage.setItem('token', token);
+            console.log("user id is ",userId);
+            setUserId(userId);
+            setUsers(users);
 
-            localStorage.setItem('token', token);
-            setUser(formData.username);
         } catch (error) {
             console.log("something wrong with login");
             setError(error.response.data.message);
@@ -343,7 +347,7 @@ export const GlobalProvider = ({ children }) => {
 
     const getIncomes = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}get-incomes`);
+            const response = await axios.get(`${BASE_URL}users/${userId}/get-income`);
             setIncomes(response.data);
             console.log(response.data);
         } catch (error) {
@@ -354,7 +358,7 @@ export const GlobalProvider = ({ children }) => {
 
     const addIncome = async (income) => {
         try {
-            const response = await axios.post(`${BASE_URL}add-income`, income);
+            const response = await axios.post(`${BASE_URL}users/${userId}/add-income`, income);
             getIncomes();
         } catch (error) {
             console.error("Error adding income:", error);
@@ -364,7 +368,7 @@ export const GlobalProvider = ({ children }) => {
 
     const deleteIncome = async (id) => {
         try {
-            const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
+            const res = await axios.delete(`${BASE_URL}users/${userId}/delete-income/${id}`);
             getIncomes();
         } catch (error) {
             console.error("Error deleting income:", error);
@@ -378,7 +382,7 @@ export const GlobalProvider = ({ children }) => {
 
     const addExpense = async (expense) => {
         try {
-            const response = await axios.post(`${BASE_URL}add-expense`, expense);
+            const response = await axios.post(`${BASE_URL}users/${userId}/add-expense`, expense);
             getExpenses();
         } catch (error) {
             console.error("Error adding expense:", error);
@@ -388,7 +392,7 @@ export const GlobalProvider = ({ children }) => {
 
     const getExpenses = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}get-expenses`);
+            const response = await axios.get(`${BASE_URL}users/${userId}/get-expense`);
             setExpenses(response.data);
             console.log(response.data);
         } catch (error) {
@@ -399,7 +403,7 @@ export const GlobalProvider = ({ children }) => {
 
     const deleteExpense = async (id) => {
         try {
-            const res = await axios.delete(`${BASE_URL}delete-expense/${id}`);
+            const res = await axios.delete(`${BASE_URL}users/${userId}/delete-expense/${id}`);
             getExpenses();
         } catch (error) {
             console.error("Error deleting expense:", error);
@@ -439,8 +443,10 @@ export const GlobalProvider = ({ children }) => {
             setError,
             login,
             logout,
-            user,
-            setUser
+            userId,
+            setUserId,
+            users,
+            setUsers
         }}>
             {children}
         </GlobalContext.Provider>
