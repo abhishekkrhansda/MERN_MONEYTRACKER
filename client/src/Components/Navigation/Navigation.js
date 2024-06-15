@@ -3,12 +3,18 @@ import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
 import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
-
+import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../../context/globalContext'
 
 function Navigation({active, setActive}) {
 
     const {users,logout} = useGlobalContext();
+    const Navigate = useNavigate();
+
+    const loggingOut=(e) =>{
+        logout();
+        Navigate('/');
+    }
     
     return (
         <NavStyled>
@@ -32,11 +38,12 @@ function Navigation({active, setActive}) {
                 })}
             </ul>
             <div className="bottom-nav">
-            <li>
-                    {signout}Login
-                </li>
+         
                 <li>
+                    <button onClick={loggingOut}>
                     {signout} Sign Out
+                    </button>
+                    
                 </li>
             </div>
         </NavStyled>

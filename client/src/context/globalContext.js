@@ -328,11 +328,13 @@ export const GlobalProvider = ({ children }) => {
     const login = async (formData) => {
         try {
             const response = await axios.post(`${BASE_URL}login`, formData);
-            const { userId ,users} = response.data;
-            // localStorage.setItem('token', token);
+            const {token, userId ,users} = response.data;
+            localStorage.setItem('token', token);
             console.log("user id is ",userId);
             setUserId(userId);
             setUsers(users);
+            getExpenses();
+            getIncomes();
 
         } catch (error) {
             console.log("something wrong with login");
@@ -341,8 +343,11 @@ export const GlobalProvider = ({ children }) => {
     };
 
     const logout = () => {
-        // localStorage.removeItem('token');
-        // setUser('');
+        localStorage.removeItem('token');
+        setUsers('');
+        setUserId('');
+        setExpenses([]);
+        setIncomes([]);
     };
 
     const getIncomes = async () => {
